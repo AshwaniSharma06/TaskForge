@@ -25,6 +25,7 @@ import { BoardPage } from './pages/BoardPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { AiLabPage } from './pages/AiLabPage';
 
 interface Project {
   id: string;
@@ -195,6 +196,9 @@ const WorkspaceShell: React.FC = () => {
           )}
           {activePage === 'settings' && (
             <SettingsPage />
+          )}
+          {activePage === 'ailab' && (
+            <AiLabPage projects={projects} />
           )}
         </main>
       </div>

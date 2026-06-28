@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { prisma } from '../services/prisma';
 
 export const generateDescription = async (req: Request, res: Response) => {
   try {
@@ -166,3 +167,55 @@ export const summarizeMeetingNotes = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const createTasksFromNotes = async (req: Request, res: Response) => {
+  try {
+    const { projectId, summaryText } = req.body;
+    if (!projectId || !summaryText) {
+      return res.status(400).json({ error: 'projectId and summaryText are required' });
+    }
+
+    // Split summaryText into lines and look for bullet points
+    const lines = summaryText.split('\n');
+    const tasksToCreate: string[] = [];
+
+    lines.forEach((line: string) => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+        // Strip out bullet markers, markdown bold characters, and mentions
+        const cleanTitle = trimmed
+          .replace(/^[-*]\s*/, '') // Remove lead bullet
+          .replace(/\*\*@\w+\*\*/g, '') // Remove @Name bold mentions
+          .replace(/@\w+/g, '') // Remove standard @Name mentions
+          .replace(/to\s/i, '') // Remove transition helper words
+          .replace(/\*\*|[\*@]/g, '') // Strip remaining markers
+          .trim();
+        
+        if (cleanTitle.length > 5 && !cleanTitle.toLowerCase().includes('next steps') && !cleanTitle.toLowerCase().includes('milestones')) {
+          tasksToCreate.push(cleanTitle);
+        }
+      }
+    });
+
+    const createdTasks = [];
+    for (const title of tasksToCreate.slice(0, 5)) { // Limit to max 5 generated tasks for safety
+      const task = await prisma.task.create({
+        data: {
+          projectId,
+          title,
+          status: 'TODO',
+          priority: 'MEDIUM',
+        }
+      });
+      createdTasks.push(task);
+    }
+
+    res.status(201).json({
+      message: `Successfully created ${createdTasks.length} tasks from meeting notes.`,
+      tasks: createdTasks
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, Calendar, BarChart3, Settings, LogOut, Star, Folder, Plus } from 'lucide-react';
+import { LayoutDashboard, Calendar, BarChart3, Settings, LogOut, Star, Folder, Plus, Sparkles } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -29,6 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={15} /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar size={15} /> },
     { id: 'analytics', label: 'Analytics', icon: <BarChart3 size={15} /> },
+    { id: 'ailab', label: 'AI Developer Lab', icon: <Sparkles size={15} /> },
     { id: 'settings', label: 'Settings', icon: <Settings size={15} /> }
   ];
 

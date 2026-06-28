@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { generateDescription, suggestPriority, generateSubtasks, generateSummary, suggestDeadline, summarizeMeetingNotes } from '../controllers/ai.controller';
+import { generateDescription, suggestPriority, generateSubtasks, generateSummary, suggestDeadline, summarizeMeetingNotes, createTasksFromNotes } from '../controllers/ai.controller';
 import { authenticate } from '../middleware/auth.middleware';
 
 const router = Router();
@@ -12,5 +12,6 @@ router.post('/subtasks', generateSubtasks);
 router.post('/summary', generateSummary);
 router.post('/deadline', suggestDeadline);
 router.post('/meeting-notes', summarizeMeetingNotes);
+router.post('/create-tasks-from-notes', createTasksFromNotes);
 
 export default router;
