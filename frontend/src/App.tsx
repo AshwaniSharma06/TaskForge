@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SocketProvider } from './context/SocketContext';
+import { ToastProvider } from './context/ToastContext';
 import api from './services/api';
 
 // Layout & Navigation
@@ -268,7 +269,9 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <SocketProvider>
-          <WorkspaceShell />
+          <ToastProvider>
+            <WorkspaceShell />
+          </ToastProvider>
         </SocketProvider>
       </AuthProvider>
     </ThemeProvider>

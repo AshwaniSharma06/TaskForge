@@ -11,6 +11,7 @@ import {
   Paperclip, MoreHorizontal, User
 } from 'lucide-react';
 import { TaskDetailModal } from '../components/board/TaskDetailModal';
+import { useToast } from '../context/ToastContext';
 
 const COLUMNS = [
   { id: 'BACKLOG', label: 'Backlog', color: 'border-t-zinc-650' },
@@ -28,6 +29,7 @@ interface BoardPageProps {
 
 export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) => {
   const { socket } = useSocket();
+  const { addToast } = useToast();
   
   const [project, setProject] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -151,8 +153,10 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
 
     try {
       await api.put(`/tasks/${taskId}`, { status: targetColId });
+      addToast('Task status updated successfully', 'success');
     } catch (err) {
       console.error('Failed to move task status', err);
+      addToast('Failed to update task status', 'error');
       // Revert upon error
       setProject((prev: any) => ({ ...prev, tasks: originalTasks }));
     }
@@ -178,11 +182,14 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
 
     try {
       await api.post(`/projects/${projectId}/invite`, { email: inviteEmail, role: inviteRole });
+      addToast('Member invited to project successfully', 'success');
       setInviteSuccess('Member invited successfully!');
       setInviteEmail('');
       fetchProject(); // refresh list
     } catch (err: any) {
-      setInviteError(err.response?.data?.error || 'Failed to invite member.');
+      const msg = err.response?.data?.error || 'Failed to invite member.';
+      setInviteError(msg);
+      addToast(msg, 'error');
     } finally {
       setInviteLoading(false);
     }
@@ -205,12 +212,13 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
       });
 
       setProject((prev: any) => ({ ...prev, tasks: [...prev.tasks, res.data] }));
+      addToast('Task created successfully!', 'success');
       setIsCreateTaskOpen(false);
       setNewTaskTitle('');
       setNewTaskDesc('');
       setNewTaskAssignee('');
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      addToast(err.response?.data?.error || 'Failed to create task.', 'error');
     } finally {
       setTaskCreateLoading(false);
     }
