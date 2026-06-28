@@ -123,6 +123,24 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
     };
   }, [socket, projectId, project]);
 
+  // Listen to shortcuts for Task creation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isTyping = document.activeElement?.tagName === 'INPUT' || 
+                       document.activeElement?.tagName === 'TEXTAREA' || 
+                       document.activeElement?.getAttribute('contenteditable') === 'true';
+      if (isTyping) return;
+
+      if (e.key === 't' && project?.myRole !== 'VIEWER') {
+        e.preventDefault();
+        setNewTaskCol('TODO');
+        setIsCreateTaskOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [project]);
+
   // Drag and Drop implementation
   const handleDragStart = (e: React.DragEvent, taskId: string) => {
     e.dataTransfer.setData('taskId', taskId);

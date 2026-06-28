@@ -48,6 +48,8 @@ const WorkspaceShell: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [lastKey, setLastKey] = useState<string | null>(null);
 
   // New Project Form States
   const [projectName, setProjectName] = useState('');
@@ -82,19 +84,64 @@ const WorkspaceShell: React.FC = () => {
     }
   }, [user]);
 
-  // Global key listener for Ctrl + K search trigger
+  // Global key listener for custom shortcuts and key sequences
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const isTyping = document.activeElement?.tagName === 'INPUT' || 
+                       document.activeElement?.tagName === 'TEXTAREA' || 
+                       document.activeElement?.getAttribute('contenteditable') === 'true';
+      
+      if (isTyping) return;
+
+      // Close all modals with Escape
+      if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+        setIsCreateProjectOpen(false);
+        setIsShortcutsOpen(false);
+        return;
+      }
+
+      // Ctrl + K search
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        if (user) {
-          setIsSearchOpen((prev) => !prev);
-        }
+        if (user) setIsSearchOpen((prev) => !prev);
+        return;
+      }
+
+      // Check key sequence 'g' + target
+      if (lastKey === 'g') {
+        setLastKey(null);
+        if (e.key === 'd') { e.preventDefault(); onNavigate('dashboard'); }
+        else if (e.key === 'c') { e.preventDefault(); onNavigate('calendar'); }
+        else if (e.key === 'a') { e.preventDefault(); onNavigate('analytics'); }
+        else if (e.key === 'l') { e.preventDefault(); onNavigate('ailab'); }
+        else if (e.key === 's') { e.preventDefault(); onNavigate('settings'); }
+        return;
+      }
+
+      if (e.key === 'g') {
+        setLastKey('g');
+        setTimeout(() => setLastKey(null), 1000); // Reset sequence prefix after 1s
+        return;
+      }
+
+      // Create Project Dialog
+      if (e.key === 'c') {
+        e.preventDefault();
+        setIsCreateProjectOpen(true);
+        return;
+      }
+
+      // Shortcuts modal
+      if (e.key === '?') {
+        e.preventDefault();
+        setIsShortcutsOpen(true);
+        return;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [user]);
+  }, [user, lastKey]);
 
   // Handle Create Project Submit
   const handleCreateProject = async (e: React.FormEvent) => {
@@ -210,6 +257,58 @@ const WorkspaceShell: React.FC = () => {
         onNavigate={onNavigate}
         projects={projects}
       />
+
+      {/* Dialog: Keyboard Shortcuts */}
+      <Dialog isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} title="Keyboard Shortcuts">
+        <div className="flex flex-col gap-4 text-xs select-none">
+          <div className="flex justify-between border-b border-zinc-850 pb-2 text-zinc-550 font-bold uppercase tracking-wider">
+            <span>Action</span>
+            <span>Shortcut</span>
+          </div>
+          <div className="flex flex-col gap-3 font-semibold">
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Open Global Search</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">Ctrl + K</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Open Shortcuts Cheatsheet</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">?</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Create New Project</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">c</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Create Task (on Board page)</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">t</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Go to Dashboard</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">g + d</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Go to Calendar</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">g + c</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Go to Analytics</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">g + a</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Go to AI Developer Lab</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">g + l</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Go to Settings</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">g + s</kbd>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-zinc-300">Close Open Modals / Drawers</span>
+              <kbd className="px-2 py-1 bg-zinc-950 border border-zinc-850 rounded font-mono text-[9px] text-zinc-400">Esc</kbd>
+            </div>
+          </div>
+        </div>
+      </Dialog>
 
       {/* Dialog: Create Project */}
       <Dialog isOpen={isCreateProjectOpen} onClose={() => setIsCreateProjectOpen(false)} title="Create New Project">
