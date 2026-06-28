@@ -13,11 +13,7 @@ interface AnalyticsData {
   productivityOverview: { day: string; count: number }[];
 }
 
-interface AnalyticsPageProps {
-  projects: any[];
-}
-
-export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ projects }) => {
+export const AnalyticsPage: React.FC = () => {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 

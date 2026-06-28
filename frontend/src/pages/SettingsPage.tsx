@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { User, Lock, Settings, Moon, Sun, Monitor, Bell } from 'lucide-react';
+import { User, Lock, Settings, Moon, Sun, Bell } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { user, updateUser } = useAuth();

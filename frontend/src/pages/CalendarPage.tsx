@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { ChevronLeft, ChevronRight, Sparkles, AlertCircle, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { TaskDetailModal } from '../components/board/TaskDetailModal';
 
 interface Project {
@@ -23,10 +23,9 @@ interface Task {
 
 interface CalendarPageProps {
   projects: Project[];
-  onNavigate: (page: string, params?: Record<string, string>) => void;
 }
 
-export const CalendarPage: React.FC<CalendarPageProps> = ({ projects, onNavigate }) => {
+export const CalendarPage: React.FC<CalendarPageProps> = ({ projects }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);

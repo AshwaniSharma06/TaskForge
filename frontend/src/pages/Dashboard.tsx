@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
-import { Folder, CheckSquare, Clock, AlertCircle, ArrowRight, Activity, Calendar } from 'lucide-react';
+import { Folder, CheckSquare, Clock, AlertCircle, Calendar } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface DashboardStats {
@@ -137,7 +137,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             </div>
             
             <div className="h-48 w-full flex items-end justify-between px-4 pt-4 border-b border-zinc-850 pb-2 relative">
-              {stats?.productivityOverview.map((item, index) => {
+              {stats?.productivityOverview.map((item) => {
                 const percent = (item.count / maxProductivityCount) * 100;
                 return (
                   <div key={item.day} className="flex flex-col items-center gap-2 group w-10 relative">
@@ -178,7 +178,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                   >
                     <div className="min-w-0 flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <Badge variant={`priority-${task.priority.toLowerCase() as any}`}>{task.priority}</Badge>
+                        <Badge variant={`priority-${task.priority.toLowerCase()}` as any}>{task.priority}</Badge>
                         <span className="text-xs font-semibold text-zinc-150 truncate leading-none">{task.title}</span>
                       </div>
                       <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-medium">

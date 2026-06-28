@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
-import { Card } from '../ui/Card';
 import { 
-  X, CheckSquare, MessageSquare, Paperclip, Calendar, User, 
-  Trash2, Plus, Sparkles, Send, Edit3, Save, ThumbsUp, AlertCircle, FileText
+  X, Trash2, Plus, Sparkles, Send, Save, ThumbsUp, FileText, Paperclip
 } from 'lucide-react';
 
 interface TaskDetailModalProps {
@@ -478,7 +475,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ taskId, onClos
                       </div>
                       <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-all">
                         <a href={file.url} target="_blank" rel="noreferrer" className="p-0.5 text-zinc-500 hover:text-zinc-300 rounded transition-all">
-                          <Check size={11} className="hidden" /> Open
+                          Open
                         </a>
                         <button onClick={() => handleDeleteAttachment(file.id)} className="p-0.5 text-zinc-500 hover:text-rose-400 rounded transition-all">
                           <Trash2 size={11} />

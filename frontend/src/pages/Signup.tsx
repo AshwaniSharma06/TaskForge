@@ -27,7 +27,7 @@ export const Signup: React.FC<SignupProps> = ({ onNavigate }) => {
     setLoading(true);
 
     try {
-      const res = await api.post('/auth/register', { name, email, password });
+      await api.post('/auth/register', { name, email, password });
       // Redirect to verification screen with email pre-filled
       onNavigate('verify-email', { email });
     } catch (err: any) {

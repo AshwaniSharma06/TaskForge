@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
-import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Dialog } from '../components/ui/Dialog';
@@ -10,7 +8,7 @@ import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { 
   Plus, Star, UserPlus, Filter, CheckSquare, MessageSquare, 
-  Paperclip, Calendar, MoreHorizontal, User, Sparkles
+  Paperclip, MoreHorizontal, User
 } from 'lucide-react';
 import { TaskDetailModal } from '../components/board/TaskDetailModal';
 
@@ -26,11 +24,9 @@ const COLUMNS = [
 interface BoardPageProps {
   projectId: string;
   openTaskId?: string;
-  onNavigate: (page: string, params?: Record<string, string>) => void;
 }
 
-export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId, onNavigate }) => {
-  const { user } = useAuth();
+export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) => {
   const { socket } = useSocket();
   
   const [project, setProject] = useState<any | null>(null);
@@ -400,7 +396,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId, onN
                   >
                     {/* Priority Badge */}
                     <div className="flex items-center justify-between">
-                      <Badge variant={`priority-${task.priority.toLowerCase() as any}`}>{task.priority}</Badge>
+                      <Badge variant={`priority-${task.priority.toLowerCase()}` as any}>{task.priority}</Badge>
                       <button className="opacity-0 group-hover:opacity-100 p-0.5 text-zinc-500 hover:text-zinc-300 rounded transition-all">
                         <MoreHorizontal size={12} />
                       </button>
