@@ -28,11 +28,6 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
     } catch (err: any) {
       const errMsg = err.response?.data?.error || 'Failed to sign in. Please try again.';
       setError(errMsg);
-      
-      // If email is not verified, redirect to verification screen
-      if (err.response?.status === 403 && err.response?.data?.emailNotVerified) {
-        onNavigate('verify-email', { email: err.response.data.email });
-      }
     } finally {
       setLoading(false);
     }

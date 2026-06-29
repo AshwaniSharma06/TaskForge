@@ -17,7 +17,6 @@ import { Button } from './components/ui/Button';
 // Pages
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
-import { VerifyEmail } from './pages/VerifyEmail';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import { Dashboard } from './pages/Dashboard';
@@ -189,8 +188,6 @@ const WorkspaceShell: React.FC = () => {
     switch (authPage) {
       case 'signup':
         return <Signup onNavigate={onNavigate} />;
-      case 'verify-email':
-        return <VerifyEmail params={routeParams} onNavigate={onNavigate} />;
       case 'forgot-password':
         return <ForgotPassword onNavigate={onNavigate} />;
       case 'reset-password':

@@ -17,29 +17,27 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Simulating email verification code (6 digit numeric code)
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
     const user = await prisma.user.create({
       data: {
         email,
         name,
         password: hashedPassword,
-        verificationToken: verificationCode,
-        isVerified: false,
+        verificationToken: null,
+        isVerified: true,
       }
     });
 
-    console.log(`\n======================================================`);
-    console.log(`[SIMULATED EMAIL SERVICE]`);
-    console.log(`To: ${email}`);
-    console.log(`Subject: Verify your TaskForge Account`);
-    console.log(`Body: Your email verification code is: ${verificationCode}`);
-    console.log(`======================================================\n`);
+    const token = generateToken({ userId: user.id, email: user.email });
 
     res.status(201).json({
-      message: 'Registration successful. A verification code has been sent to your email (simulated in console).',
-      email: user.email,
+      message: 'Registration successful',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+      }
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -107,29 +105,6 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
-
-    if (!user.isVerified) {
-      // Re-trigger verification code simulation
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-      await prisma.user.update({
-        where: { email },
-        data: { verificationToken: verificationCode }
-      });
-
-      console.log(`\n======================================================`);
-      console.log(`[SIMULATED EMAIL SERVICE - RE-VERIFICATION]`);
-      console.log(`To: ${email}`);
-      console.log(`Subject: Verify your TaskForge Account`);
-      console.log(`Body: Your email verification code is: ${verificationCode}`);
-      console.log(`======================================================\n`);
-
-      return res.status(403).json({
-        error: 'Email is not verified.',
-        emailNotVerified: true,
-        email: user.email
-      });
-    }
-
     const token = generateToken({ userId: user.id, email: user.email });
 
     res.status(200).json({

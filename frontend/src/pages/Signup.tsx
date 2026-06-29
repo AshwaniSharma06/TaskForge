@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -9,6 +10,7 @@ interface SignupProps {
 }
 
 export const Signup: React.FC<SignupProps> = ({ onNavigate }) => {
+  const { login } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,9 +29,9 @@ export const Signup: React.FC<SignupProps> = ({ onNavigate }) => {
     setLoading(true);
 
     try {
-      await api.post('/auth/register', { name, email, password });
-      // Redirect to verification screen with email pre-filled
-      onNavigate('verify-email', { email });
+      const res = await api.post('/auth/register', { name, email, password });
+      login(res.data.token, res.data.user);
+      onNavigate('dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Registration failed. Please try again.');
     } finally {
