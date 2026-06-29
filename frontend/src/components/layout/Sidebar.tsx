@@ -41,9 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Brand Header */}
       <div className="h-16 px-6 border-b border-outline-variant/10 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center font-bold text-sm shadow-sm animate-pulse">
-            TF
-          </div>
+          <img src="/logo.png" alt="TaskForge Logo" className="w-7 h-7 rounded-lg object-cover border border-outline-variant/20 shadow-sm" />
           <span className="font-black text-base text-primary tracking-wider">TaskForge</span>
         </div>
       </div>

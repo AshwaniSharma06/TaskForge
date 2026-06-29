@@ -46,10 +46,8 @@ export const Signup: React.FC<SignupProps> = ({ onNavigate }) => {
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo/Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 text-primary mb-3 shadow-lg shadow-primary/5 animate-pulse">
-            <span className="font-black text-xl tracking-wider">TF</span>
-          </div>
+        <div className="text-center mb-6">
+          <img src="/logo.png" alt="TaskForge Logo" className="w-20 h-20 mx-auto mb-2 object-contain" />
           <h1 className="text-2xl font-bold text-on-surface tracking-tight">Create your account</h1>
           <p className="text-on-surface-variant/75 text-xs mt-1">Get started with a free TaskForge workspace</p>
         </div>
