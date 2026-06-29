@@ -34,25 +34,25 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-zinc-950 to-zinc-950 flex flex-col justify-center items-center p-4">
+    <div className="min-h-screen bg-background bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background flex flex-col justify-center items-center p-4 relative overflow-hidden">
       {/* Glow Backdrops */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 mb-3 shadow-lg shadow-indigo-600/5">
-            <span className="font-bold text-xl tracking-wider">TF</span>
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 text-primary mb-3 shadow-lg shadow-primary/5 animate-pulse">
+            <span className="font-black text-xl tracking-wider">TF</span>
           </div>
-          <h1 className="text-2xl font-bold text-zinc-50 tracking-tight">Welcome to TaskForge</h1>
-          <p className="text-zinc-400 text-xs mt-1">Manage your team tasks and AI workflows</p>
+          <h1 className="text-2xl font-bold text-on-surface tracking-tight">Welcome to TaskForge</h1>
+          <p className="text-on-surface-variant/75 text-xs mt-1">Manage your team tasks and AI workflows</p>
         </div>
 
         {/* Main Card */}
-        <div className="glass-panel p-8 rounded-2xl shadow-xl border border-zinc-800/80">
+        <div className="glass-panel p-8 rounded-2xl shadow-2xl border border-outline-variant/15 bg-gradient-to-br from-surface-container-low/75 to-surface-container/75">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {error && (
-              <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs px-3.5 py-2.5 rounded-lg">
+              <div className="bg-error/10 border border-error/25 text-error text-xs px-3.5 py-2.5 rounded-lg font-medium">
                 {error}
               </div>
             )}
@@ -68,12 +68,12 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
             />
 
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="text-xs font-semibold text-zinc-400 select-none">Password</label>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="text-xs font-semibold text-on-surface-variant select-none">Password</label>
                 <button
                   type="button"
                   onClick={() => onNavigate('forgot-password')}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-all"
+                  className="text-xs text-primary hover:text-secondary font-medium transition-all"
                 >
                   Forgot password?
                 </button>
@@ -95,11 +95,11 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
         </div>
 
         {/* Footer info */}
-        <p className="text-center text-zinc-500 text-xs mt-6">
+        <p className="text-center text-on-surface-variant/40 text-xs mt-6">
           Don't have an account?{' '}
           <button
             onClick={() => onNavigate('signup')}
-            className="text-indigo-400 hover:text-indigo-300 font-semibold transition-all"
+            className="text-primary hover:text-secondary font-semibold transition-all"
           >
             Sign up for free
           </button>

@@ -15,14 +15,14 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyle = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseStyle = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed select-none';
   
   const variants = {
-    primary: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/10 active:scale-[0.98]',
-    secondary: 'bg-zinc-800 hover:bg-zinc-700/80 text-zinc-100 border border-zinc-700/80',
-    danger: 'bg-rose-600 hover:bg-rose-500 text-white active:scale-[0.98]',
-    ghost: 'hover:bg-zinc-800/80 text-zinc-400 hover:text-zinc-200',
-    glass: 'glass-panel hover:bg-zinc-800/60 text-zinc-200 border border-white/10 active:scale-[0.98]'
+    primary: 'bg-primary hover:bg-secondary text-on-primary font-bold shadow-lg shadow-primary/10 active:scale-[0.98]',
+    secondary: 'bg-surface-container border border-outline-variant/35 hover:bg-surface-container-high text-on-surface',
+    danger: 'bg-error hover:opacity-95 text-on-error font-bold active:scale-[0.98]',
+    ghost: 'hover:bg-white/5 text-on-surface-variant hover:text-on-surface',
+    glass: 'glass-panel hover:bg-white/5 text-on-surface border border-outline-variant/25 active:scale-[0.98]'
   };
 
   const sizes = {

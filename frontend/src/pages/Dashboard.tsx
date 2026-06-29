@@ -67,186 +67,215 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   const maxProductivityCount = Math.max(...(stats?.productivityOverview.map((d) => d.count) || [1]), 4);
 
   return (
-    <div className="p-6 flex flex-col gap-6 overflow-y-auto h-full max-w-7xl mx-auto">
-      {/* Welcome header */}
-      <div>
-        <h1 className="text-xl font-bold text-zinc-50 tracking-tight">
-          {welcomeMessage()}, {user?.name.split(' ')[0]}
-        </h1>
-        <p className="text-xs text-zinc-400 mt-1">Here is what is happening in your workspace today.</p>
-      </div>
+  const nextCriticalTask = stats?.upcomingDeadlines?.[0];
 
-      {/* Grid count cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="flex items-center gap-4 py-4" hoverEffect>
-          <div className="p-2.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+  return (
+    <div className="p-6 flex flex-col gap-6 overflow-y-auto h-full max-w-[1440px] mx-auto custom-scrollbar select-none">
+      
+      {/* Hero Grid Section */}
+      <div className="grid grid-cols-12 gap-6 items-stretch">
+        
+        {/* Welcome AI Summary Card */}
+        <div className="col-span-12 lg:col-span-8 glass-card rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-primary">
+            <Clock size={120} />
+          </div>
+          
+          <div className="w-full md:w-1/3 flex flex-col gap-3 z-10">
+            <h1 className="text-2xl font-bold text-on-surface tracking-tight">
+              {welcomeMessage()}, {user?.name.split(' ')[0]}
+            </h1>
+            <p className="text-on-surface-variant/75 text-xs leading-relaxed">
+              You're on track for a productive day. Here's your workspace briefing.
+            </p>
+            <div className="flex gap-2 mt-2">
+              <span className="px-2.5 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-full text-[9px] font-bold uppercase tracking-wider">
+                AI Synced
+              </span>
+              <span className="px-2.5 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[9px] font-bold uppercase tracking-wider">
+                On Schedule
+              </span>
+            </div>
+          </div>
+          
+          <div className="w-full md:w-2/3 bg-white/[0.03] rounded-xl p-4 border border-outline-variant/10 z-10 shadow-inner">
+            <div className="flex items-center gap-2 mb-2 text-primary">
+              <span className="material-symbols-outlined text-[18px] animate-pulse">bolt</span>
+              <span className="font-bold text-xs uppercase tracking-wider font-label">AI Status Summary</span>
+            </div>
+            <p className="text-xs text-on-background leading-relaxed font-medium">
+              "You have <span className="text-primary font-bold">{stats?.totalProjects} active projects</span> and <span className="text-secondary font-bold">{stats?.activeTasks} pending tasks</span> in your pipeline. 
+              {stats?.overdueTasks && stats.overdueTasks > 0 ? (
+                <span> There are <span className="text-error font-bold">{stats.overdueTasks} overdue tasks</span> requiring attention.</span>
+              ) : (
+                <span> No tasks are currently overdue.</span>
+              )}
+              {nextCriticalTask ? (
+                <span> We recommend focusing on <span className="text-primary font-bold">"{nextCriticalTask.title}"</span> next."</span>
+              ) : (
+                <span> All your milestones are currently on track."</span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* AI Assistant Widget (Critical Action Card) */}
+        <div className="col-span-12 lg:col-span-4 glass-card rounded-2xl p-6 relative shimmer-border bg-gradient-to-br from-surface-container-low to-surface-container flex flex-col justify-between min-h-[160px]">
+          <div className="flex justify-between items-start mb-2">
+            <div className="p-2 bg-primary/10 rounded-lg text-primary border border-primary/25">
+              <span className="material-symbols-outlined text-[18px]">smart_toy</span>
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/40 font-label">Priority Suggestion</span>
+          </div>
+
+          <div className="my-2">
+            <h3 className="text-sm font-bold text-on-surface tracking-tight mb-1.5">Next Critical Action</h3>
+            {nextCriticalTask ? (
+              <div 
+                onClick={() => onNavigate('board', { projectId: nextCriticalTask.projectId, openTaskId: nextCriticalTask.id })}
+                className="p-3 bg-white/[0.02] hover:bg-white/[0.06] rounded-xl border border-outline-variant/10 cursor-pointer transition-all duration-200 group"
+              >
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-bold text-xs text-on-surface group-hover:text-primary transition-colors truncate max-w-[150px]">
+                    {nextCriticalTask.title}
+                  </span>
+                  <span className="text-error font-bold text-[9px] uppercase tracking-wide">
+                    {nextCriticalTask.priority}
+                  </span>
+                </div>
+                <p className="text-[10px] text-on-surface-variant/60 truncate">{nextCriticalTask.project.name}</p>
+                <div className="w-full bg-white/[0.04] h-1 rounded-full overflow-hidden mt-2 border border-outline-variant/10">
+                  <div className="bg-primary h-full transition-all duration-500" style={{ width: `${nextCriticalTask.progress || 0}%` }} />
+                </div>
+              </div>
+            ) : (
+              <div className="p-3 text-center text-xs text-on-surface-variant/40 italic">
+                All caught up! No pending deadlines.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Project Statistics (4 Cards) */}
+        <div className="col-span-12 md:col-span-6 lg:col-span-3 glass-card rounded-2xl p-6 flex items-center gap-4 hover:scale-[1.01]">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
             <Folder size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Total Projects</p>
-            <h3 className="text-xl font-bold text-zinc-50 mt-0.5">{stats?.totalProjects}</h3>
+            <p className="text-[10px] text-on-surface-variant/45 font-bold uppercase tracking-wider font-label">Active Projects</p>
+            <h2 className="text-xl font-black text-on-surface mt-0.5">{stats?.totalProjects}</h2>
           </div>
-        </Card>
+        </div>
 
-        <Card className="flex items-center gap-4 py-4" hoverEffect>
-          <div className="p-2.5 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400">
+        <div className="col-span-12 md:col-span-6 lg:col-span-3 glass-card rounded-2xl p-6 flex items-center gap-4 hover:scale-[1.01]">
+          <div className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
             <CheckSquare size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Active Tasks</p>
-            <h3 className="text-xl font-bold text-zinc-50 mt-0.5">{stats?.activeTasks}</h3>
+            <p className="text-[10px] text-on-surface-variant/45 font-bold uppercase tracking-wider font-label">Pending Tasks</p>
+            <h2 className="text-xl font-black text-on-surface mt-0.5">{stats?.activeTasks}</h2>
           </div>
-        </Card>
+        </div>
 
-        <Card className="flex items-center gap-4 py-4" hoverEffect>
-          <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+        <div className="col-span-12 md:col-span-6 lg:col-span-3 glass-card rounded-2xl p-6 flex items-center gap-4 hover:scale-[1.01]">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
             <Clock size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Tasks Completed</p>
-            <h3 className="text-xl font-bold text-zinc-50 mt-0.5">{stats?.completedTasks}</h3>
+            <p className="text-[10px] text-on-surface-variant/45 font-bold uppercase tracking-wider font-label">Completed Tasks</p>
+            <h2 className="text-xl font-black text-on-surface mt-0.5">{stats?.completedTasks}</h2>
           </div>
-        </Card>
+        </div>
 
-        <Card className="flex items-center gap-4 py-4" hoverEffect>
-          <div className={`p-2.5 rounded-lg border ${
+        <div className="col-span-12 md:col-span-6 lg:col-span-3 glass-card rounded-2xl p-6 flex items-center gap-4 hover:scale-[1.01]">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
             (stats?.overdueTasks || 0) > 0 
-              ? 'bg-rose-500/10 border-rose-500/20 text-rose-450' 
-              : 'bg-zinc-800 border-zinc-700 text-zinc-400'
+              ? 'bg-error/15 border-error/25 text-error animate-pulse' 
+              : 'bg-white/[0.04] border-outline-variant/30 text-on-surface-variant'
           }`}>
             <AlertCircle size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Overdue Tasks</p>
-            <h3 className={`text-xl font-bold mt-0.5 ${(stats?.overdueTasks || 0) > 0 ? 'text-rose-400' : 'text-zinc-50'}`}>
+            <p className="text-[10px] text-on-surface-variant/45 font-bold uppercase tracking-wider font-label">Overdue Tasks</p>
+            <h2 className={`text-xl font-black mt-0.5 ${(stats?.overdueTasks || 0) > 0 ? 'text-error' : 'text-on-surface'}`}>
               {stats?.overdueTasks}
-            </h3>
+            </h2>
           </div>
-        </Card>
-      </div>
+        </div>
 
-      {/* Main Dashboards Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Productivity + Deadlines */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          {/* Productivity Overview (Animated SVG Bar Chart) */}
-          <Card className="flex flex-col gap-4">
+        {/* Productivity Chart (Spans 8 columns) */}
+        <div className="col-span-12 lg:col-span-8 glass-card rounded-2xl p-6">
+          <div className="flex justify-between items-center mb-4">
             <div>
-              <h3 className="text-xs font-bold text-zinc-50 uppercase tracking-wider">Productivity Overview</h3>
-              <p className="text-[10px] text-zinc-500">Number of tasks completed per day over the last 7 days</p>
+              <h3 className="text-sm font-bold text-on-surface">Productivity Output</h3>
+              <p className="text-xs text-on-surface-variant/65">Weekly completed tasks overview</p>
             </div>
-            
-            <div className="h-48 w-full flex items-end justify-between px-4 pt-4 border-b border-zinc-850 pb-2 relative">
+          </div>
+
+          <div className="h-48 w-full relative mt-6">
+            <div className="absolute bottom-0 w-full h-full flex items-end justify-between px-2 gap-4 z-10">
               {stats?.productivityOverview.map((item) => {
                 const percent = (item.count / maxProductivityCount) * 100;
                 return (
-                  <div key={item.day} className="flex flex-col items-center gap-2 group w-10 relative">
+                  <div key={item.day} className="flex-grow flex flex-col items-center group relative">
                     {/* Tooltip value */}
-                    <div className="absolute -top-7 opacity-0 group-hover:opacity-100 bg-zinc-900 border border-zinc-800 text-[10px] px-1.5 py-0.5 rounded text-zinc-200 transition-all shadow-md z-10 shrink-0">
-                      {item.count} tasks
+                    <div className="absolute -top-8 opacity-0 group-hover:opacity-100 bg-surface-container border border-outline-variant/25 text-[9px] font-bold px-2 py-0.5 rounded text-primary transition-all shadow-md z-20">
+                      {item.count} Tasks
                     </div>
-                    {/* Chart Bar */}
-                    <div className="w-6 bg-gradient-to-t from-indigo-600/50 to-violet-500 rounded-t relative overflow-hidden transition-all duration-300 group-hover:from-indigo-500/70 group-hover:to-violet-400" style={{ height: `${Math.max(percent, 4)}%` }}>
-                      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {/* Bar */}
+                    <div 
+                      className="w-full bg-primary/10 border-t-2 border-primary/20 hover:bg-primary/25 rounded-t-md transition-all duration-300 relative cursor-pointer" 
+                      style={{ height: `${Math.max(percent, 4)}%` }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-secondary/15 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    {/* Label */}
-                    <span className="text-[10px] font-bold text-zinc-500 tracking-wide uppercase">{item.day}</span>
+                    <span className="text-[9px] font-bold mt-2 text-on-surface-variant/50 uppercase tracking-wider font-label">{item.day}</span>
                   </div>
                 );
               })}
             </div>
-          </Card>
-
-          {/* Upcoming Deadlines */}
-          <Card className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xs font-bold text-zinc-50 uppercase tracking-wider">Upcoming Deadlines</h3>
-                <p className="text-[10px] text-zinc-500">Uncompleted tasks due soon across your workspace</p>
-              </div>
+            
+            {/* Grid background lines */}
+            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-5">
+              <div className="w-full border-t border-on-surface"></div>
+              <div className="w-full border-t border-on-surface"></div>
+              <div className="w-full border-t border-on-surface"></div>
+              <div className="w-full border-t border-on-surface"></div>
             </div>
-
-            <div className="flex flex-col gap-2.5">
-              {stats?.upcomingDeadlines.length === 0 ? (
-                <div className="text-center py-6 text-xs text-zinc-500 italic">No upcoming deadlines! Good job.</div>
-              ) : (
-                stats?.upcomingDeadlines.map((task) => (
-                  <div
-                    key={task.id}
-                    onClick={() => onNavigate('board', { projectId: task.projectId, openTaskId: task.id })}
-                    className="flex items-center justify-between p-3 rounded-lg border border-zinc-800/60 bg-zinc-900/30 hover:bg-zinc-900/60 hover:border-zinc-700/60 cursor-pointer transition-all gap-4"
-                  >
-                    <div className="min-w-0 flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <Badge variant={`priority-${task.priority.toLowerCase()}` as any}>{task.priority}</Badge>
-                        <span className="text-xs font-semibold text-zinc-150 truncate leading-none">{task.title}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-medium">
-                        <span className="truncate">{task.project.name}</span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Calendar size={10} />
-                          {new Date(task.dueDate).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Assignee initials or avatar */}
-                    {task.assignee ? (
-                      task.assignee.avatar ? (
-                        <img src={task.assignee.avatar} alt={task.assignee.name} className="w-6 h-6 rounded-full object-cover shrink-0 border border-zinc-800" title={task.assignee.name} />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 flex items-center justify-center font-bold text-[9px] shrink-0" title={task.assignee.name}>
-                          {task.assignee.name.slice(0, 2)}
-                        </div>
-                      )
-                    ) : (
-                      <div className="w-6 h-6 rounded-full border border-dashed border-zinc-700 flex items-center justify-center text-[9px] text-zinc-650 shrink-0">U</div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </Card>
+          </div>
         </div>
 
-        {/* Right Column: Recent Activities timeline */}
-        <Card className="flex flex-col gap-4">
-          <div>
-            <h3 className="text-xs font-bold text-zinc-50 uppercase tracking-wider">Recent Activity</h3>
-            <p className="text-[10px] text-zinc-500">Activity logs across your workspace projects</p>
+        {/* Recent Activity Feed (Spans 4 columns) */}
+        <div className="col-span-12 lg:col-span-4 glass-card rounded-2xl p-6 flex flex-col max-h-[300px]">
+          <div className="flex justify-between items-center mb-4 shrink-0">
+            <h3 className="text-sm font-bold text-on-surface">Recent Activity</h3>
           </div>
 
-          <div className="flex flex-col relative pl-4 border-l border-zinc-800 gap-5 max-h-[460px] overflow-y-auto pr-1">
+          <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
             {stats?.recentActivity.length === 0 ? (
-              <div className="text-center py-6 text-xs text-zinc-550 italic pl-0">No recent activity</div>
+              <div className="text-center py-8 text-xs text-on-surface-variant/40 italic">No recent activities</div>
             ) : (
-              stats?.recentActivity.map((act) => (
-                <div key={act.id} className="relative flex flex-col gap-1 text-xs">
-                  {/* Vertical circle marker */}
-                  <span className="absolute -left-[20.5px] top-1.5 w-2.5 h-2.5 rounded-full bg-indigo-550 border-2 border-zinc-950 ring-2 ring-indigo-500/10 shrink-0" />
-                  
-                  <div className="flex items-center gap-1.5">
-                    {act.user.avatar ? (
-                      <img src={act.user.avatar} alt={act.user.name} className="w-4 h-4 rounded-full object-cover border border-zinc-800" />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-[8px] uppercase">
-                        {act.user.name.slice(0, 2)}
-                      </div>
-                    )}
-                    <span className="font-semibold text-zinc-200">{act.user.name}</span>
+              stats?.recentActivity.map((act, idx) => (
+                <div key={act.id} className="flex gap-3 relative">
+                  {idx !== stats.recentActivity.length - 1 && (
+                    <div className="absolute left-3.5 top-8 bottom-0 w-px bg-outline-variant/15"></div>
+                  )}
+                  <div className="w-7 h-7 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center border border-primary/20 z-10 text-primary">
+                    <span className="material-symbols-outlined text-[14px]">edit</span>
                   </div>
-                  <p className="text-zinc-400 leading-snug pl-5">
-                    {act.details}
-                  </p>
-                  <span className="text-[9px] text-zinc-550 pl-5">
-                    {new Date(act.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(act.createdAt).toLocaleDateString()}
-                  </span>
+                  <div className="flex-1 pb-3">
+                    <p className="text-xs text-on-surface font-medium leading-relaxed">
+                      <span className="font-bold text-primary">{act.user.name.split(' ')[0]}</span>{' '}
+                      <span className="text-on-surface-variant/75">{act.details}</span>
+                    </p>
+                    <p className="text-[9px] text-on-surface-variant/40 mt-1">
+                      {new Date(act.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
                 </div>
               ))
             )}
-          </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

@@ -408,7 +408,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
               {/* Column Cards Area */}
               <div 
                 className={`flex-1 overflow-y-auto flex flex-col gap-2.5 rounded-xl border border-transparent p-1 transition-all ${
-                  isOver ? 'bg-indigo-500/[0.02] border-dashed border-zinc-850' : ''
+                  isOver ? 'bg-primary/[0.02] border-dashed border-outline-variant/30' : ''
                 }`}
                 onDragLeave={() => setDraggedOverCol(null)}
               >
@@ -418,22 +418,22 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
                     draggable
                     onDragStart={(e) => handleDragStart(e, task.id)}
                     onClick={() => setSelectedTaskId(task.id)}
-                    className="group glass-card border border-zinc-850 p-4 rounded-xl hover:border-zinc-700/60 cursor-grab active:cursor-grabbing hover:bg-zinc-900/35 transition-all select-none hover:shadow-lg flex flex-col gap-3 relative"
+                    className="group glass-card border border-outline-variant/10 p-4 rounded-xl hover:border-primary/20 cursor-grab active:cursor-grabbing hover:bg-surface-container-high/35 transition-all duration-300 select-none hover:shadow-lg flex flex-col gap-3 relative"
                   >
                     {/* Priority Badge */}
                     <div className="flex items-center justify-between">
                       <Badge variant={`priority-${task.priority.toLowerCase()}` as any}>{task.priority}</Badge>
-                      <button className="opacity-0 group-hover:opacity-100 p-0.5 text-zinc-500 hover:text-zinc-300 rounded transition-all">
+                      <button className="opacity-0 group-hover:opacity-100 p-0.5 text-on-surface-variant/60 hover:text-on-surface rounded transition-all">
                         <MoreHorizontal size={12} />
                       </button>
                     </div>
 
                     {/* Task Title */}
-                    <p className="text-xs font-semibold text-zinc-200 tracking-tight leading-snug">{task.title}</p>
+                    <p className="text-xs font-semibold text-on-surface tracking-tight leading-snug">{task.title}</p>
 
                     {/* Task Stats Indicators */}
                     <div className="flex items-center justify-between mt-1 shrink-0">
-                      <div className="flex items-center gap-2.5 text-[10px] text-zinc-500 font-medium">
+                      <div className="flex items-center gap-2.5 text-[10px] text-on-surface-variant/50 font-medium">
                         {task.checklists?.length > 0 && (
                           <div className="flex items-center gap-1">
                             <CheckSquare size={10.5} />
@@ -455,7 +455,7 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
                           </div>
                         )}
                         {task.dueDate && (
-                          <span className="flex items-center gap-1 text-[9px] text-zinc-650 font-semibold bg-zinc-900 border border-zinc-800 px-1 rounded">
+                          <span className="flex items-center gap-1 text-[9px] text-on-surface-variant/60 font-semibold bg-surface-container border border-outline-variant/20 px-1 rounded">
                             {new Date(task.dueDate).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                           </span>
                         )}
@@ -464,14 +464,14 @@ export const BoardPage: React.FC<BoardPageProps> = ({ projectId, openTaskId }) =
                       {/* Assignee Avatar */}
                       {task.assignee ? (
                         task.assignee.avatar ? (
-                          <img src={task.assignee.avatar} alt={task.assignee.name} className="w-5 h-5 rounded-full object-cover border border-zinc-800 shrink-0" />
+                          <img src={task.assignee.avatar} alt={task.assignee.name} className="w-5 h-5 rounded-full object-cover border border-outline-variant/30 shrink-0" />
                         ) : (
-                          <div className="w-5 h-5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 flex items-center justify-center font-bold text-[8px] uppercase shrink-0">
+                          <div className="w-5 h-5 rounded-full bg-primary/10 border border-primary/20 text-primary flex items-center justify-center font-bold text-[8px] uppercase shrink-0">
                             {task.assignee.name.slice(0, 2)}
                           </div>
                         )
                       ) : (
-                        <div className="w-5 h-5 rounded-full border border-dashed border-zinc-800 flex items-center justify-center text-[8px] text-zinc-700 shrink-0">U</div>
+                        <div className="w-5 h-5 rounded-full border border-dashed border-outline-variant/40 flex items-center justify-center text-[8px] text-on-surface-variant/40 shrink-0">U</div>
                       )}
                     </div>
                   </div>

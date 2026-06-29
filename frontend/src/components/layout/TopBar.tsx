@@ -101,15 +101,15 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
   };
 
   return (
-    <header className="h-14 bg-zinc-900 border-b border-zinc-800/80 flex items-center justify-between px-6 shrink-0 relative z-20">
+    <header className="h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 flex items-center justify-between px-6 shrink-0 relative z-20 shadow-sm">
       {/* Search Trigger */}
       <button
         onClick={onSearchClick}
-        className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 transition-all w-64 text-left group"
+        className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all w-64 text-left group shadow-inner border border-outline-variant/10 hover:border-outline-variant/30"
       >
-        <Search size={14} className="text-zinc-500 group-hover:text-zinc-400" />
-        <span className="text-xs">Search projects, tasks...</span>
-        <kbd className="ml-auto text-[9px] font-semibold bg-zinc-900 px-1.5 py-0.5 rounded text-zinc-500 border border-zinc-800">
+        <Search size={14} className="text-outline group-hover:text-primary transition-colors" />
+        <span className="text-xs font-medium font-label">Search tasks...</span>
+        <kbd className="ml-auto text-[9px] font-bold bg-surface-container px-1.5 py-0.5 rounded text-outline border border-outline-variant/20">
           Ctrl K
         </kbd>
       </button>
@@ -117,7 +117,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
       {/* Right utilities */}
       <div className="flex items-center gap-4">
         {/* AI helper banner */}
-        <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-semibold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-full">
+        <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1.2 rounded-full">
           <Sparkles size={11} className="animate-pulse" />
           <span>AI Assistants Ready</span>
         </div>
@@ -126,23 +126,23 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 rounded-lg relative transition-all"
+            className="p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-full relative transition-all duration-200"
           >
             <Bell size={16} />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 border border-zinc-900 ring-2 ring-rose-500/25 animate-pulse" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error border border-background ring-2 ring-error/25 animate-pulse" />
             )}
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-80 glass-panel rounded-xl shadow-2xl overflow-hidden z-30 border border-zinc-800">
+            <div className="absolute right-0 mt-2 w-80 glass-panel rounded-xl shadow-2xl overflow-hidden z-30 border border-outline-variant/10">
               {/* Header */}
-              <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/80">
-                <span className="text-xs font-semibold text-zinc-100">Notifications</span>
+              <div className="px-4 py-3 border-b border-outline-variant/10 flex items-center justify-between bg-surface-container-high/85 backdrop-blur-xl">
+                <span className="text-xs font-semibold text-on-surface font-label">Notifications</span>
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllAsRead}
-                    className="text-[10px] text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 transition-all"
+                    className="text-[10px] text-primary hover:text-secondary font-semibold flex items-center gap-1 transition-all duration-200"
                   >
                     <Check size={10} /> Mark all read
                   </button>
@@ -150,9 +150,9 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
               </div>
 
               {/* Items List */}
-              <div className="max-h-[300px] overflow-y-auto divide-y divide-zinc-850">
+              <div className="max-h-[300px] overflow-y-auto divide-y divide-outline-variant/10 custom-scrollbar">
                 {notifications.length === 0 ? (
-                  <div className="px-4 py-8 text-center text-xs text-zinc-550 italic">
+                  <div className="px-4 py-8 text-center text-xs text-on-surface-variant/40 italic">
                     No notifications yet
                   </div>
                 ) : (
@@ -160,20 +160,20 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
                     <button
                       key={n.id}
                       onClick={() => handleNotificationClick(n)}
-                      className={`w-full text-left px-4 py-3 text-xs transition-all flex flex-col gap-1 hover:bg-zinc-850/50 ${
-                        n.isRead ? 'opacity-65' : 'bg-indigo-500/[0.02]'
+                      className={`w-full text-left px-4 py-3 text-xs transition-all flex flex-col gap-1 hover:bg-surface-container-highest/40 ${
+                        n.isRead ? 'opacity-60' : 'bg-primary/[0.02]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className={`font-semibold ${n.isRead ? 'text-zinc-355' : 'text-zinc-50'}`}>
+                        <span className={`font-semibold ${n.isRead ? 'text-on-surface-variant' : 'text-on-surface'}`}>
                           {n.title}
                         </span>
                         {!n.isRead && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                         )}
                       </div>
-                      <p className="text-zinc-400 leading-tight">{n.message}</p>
-                      <span className="text-[9px] text-zinc-650 mt-0.5">
+                      <p className="text-on-surface-variant leading-tight">{n.message}</p>
+                      <span className="text-[9px] text-on-surface-variant/40 mt-0.5">
                         {new Date(n.createdAt).toLocaleDateString()}
                       </span>
                     </button>
@@ -193,10 +193,10 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearchClick, onNavigate }) => 
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-7 h-7 rounded-full object-cover border border-zinc-800"
+              className="w-7 h-7 rounded-full object-cover border border-outline-variant/30"
             />
           ) : (
-            <div className="w-7 h-7 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 flex items-center justify-center font-bold text-xs uppercase">
+            <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 text-primary flex items-center justify-center font-bold text-xs uppercase">
               {user?.name.slice(0, 2)}
             </div>
           )}
