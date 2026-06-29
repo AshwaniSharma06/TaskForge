@@ -277,5 +277,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
