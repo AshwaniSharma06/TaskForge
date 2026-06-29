@@ -16,6 +16,7 @@ import { Button } from './components/ui/Button';
 
 // Pages
 import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
 import { VerifyEmail } from './pages/VerifyEmail';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
@@ -186,6 +187,8 @@ const WorkspaceShell: React.FC = () => {
   // 2. Unauthenticated Screens (Auth pages)
   if (!user) {
     switch (authPage) {
+      case 'signup':
+        return <Signup onNavigate={onNavigate} />;
       case 'verify-email':
         return <VerifyEmail params={routeParams} onNavigate={onNavigate} />;
       case 'forgot-password':

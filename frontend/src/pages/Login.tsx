@@ -99,6 +99,16 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           </form>
         </div>
 
+        {/* Footer info */}
+        <p className="text-center text-zinc-500 text-xs mt-6">
+          Don't have an account?{' '}
+          <button
+            onClick={() => onNavigate('signup')}
+            className="text-indigo-400 hover:text-indigo-300 font-semibold transition-all"
+          >
+            Sign up for free
+          </button>
+        </p>
       </div>
     </div>
   );
