@@ -7,7 +7,10 @@
 
 @layer base {
   body {
-    @apply bg-background text-on-background font-sans antialiased selection:bg-primary/30 selection:text-white transition-colors duration-200;
+    @apply bg-background text-on-background font-sans antialiased transition-colors duration-200;
+  }
+  body::selection {
+    @apply bg-primary/30 text-white;
   }
 }
 
