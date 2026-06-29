@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SocketProvider } from './context/SocketContext';
 import { ToastProvider } from './context/ToastContext';
 import api from './services/api';
+import { Plus } from 'lucide-react';
 
 // Layout & Navigation
 import { Sidebar } from './components/layout/Sidebar';
@@ -219,7 +220,7 @@ const WorkspaceShell: React.FC = () => {
         />
 
         {/* Dynamic Pages Area */}
-        <main className="flex-1 min-h-0 bg-zinc-950/45">
+        <main className="flex-1 min-h-0 bg-zinc-950/45 relative">
           {activePage === 'dashboard' && (
             <Dashboard onNavigate={onNavigate} />
           )}
@@ -244,6 +245,15 @@ const WorkspaceShell: React.FC = () => {
           {activePage === 'ailab' && (
             <AiLabPage projects={projects} />
           )}
+
+          {/* Contextual FAB to Add New Project */}
+          <button
+            onClick={() => setIsCreateProjectOpen(true)}
+            className="fixed bottom-6 right-6 w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-[0_10px_30px_rgba(208,188,255,0.35)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group border border-outline-variant/15 hover:bg-primary hover:text-on-primary"
+            title="Create New Project"
+          >
+            <Plus size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+          </button>
         </main>
       </div>
 
