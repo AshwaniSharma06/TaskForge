@@ -66,7 +66,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
   const maxProductivityCount = Math.max(...(stats?.productivityOverview.map((d) => d.count) || [1]), 4);
 
-  return (
   const nextCriticalTask = stats?.upcomingDeadlines?.[0];
 
   return (
