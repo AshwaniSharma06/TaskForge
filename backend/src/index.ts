@@ -32,6 +32,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Mount API Endpoints
+// Each route module maps a specific functional domain to sub-routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
