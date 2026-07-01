@@ -6,15 +6,17 @@ import { AuthenticatedRequest } from '../middleware/auth.middleware';
 export const searchUsers = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { query } = req.query;
-    if (!query) {
+    // Trim query parameter to handle leading/trailing spaces in search inputs
+    const trimmedQuery = typeof query === 'string' ? query.trim() : '';
+    if (!trimmedQuery) {
       return res.status(200).json([]);
     }
 
     const users = await prisma.user.findMany({
       where: {
         OR: [
-          { name: { contains: query as string } },
-          { email: { contains: query as string } }
+          { name: { contains: trimmedQuery } },
+          { email: { contains: trimmedQuery } }
         ]
       },
       select: {
