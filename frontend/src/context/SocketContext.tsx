@@ -21,11 +21,12 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return;
     }
 
+    // Resolve socket connection server url, falling back to local api server port
     const socketUrl = (import.meta.env.VITE_SOCKET_URL as string) || 'http://localhost:5000';
     const newSocket = io(socketUrl);
 
     newSocket.on('connect', () => {
-      // Join individual user room for notifications
+      // Join individual user room room-channel for notifications target distribution
       newSocket.emit('join_user', user.id);
     });
 
