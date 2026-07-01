@@ -29,11 +29,12 @@ export const SettingsPage: React.FC = () => {
   const [pwdLoading, setPwdLoading] = useState(false);
 
   // Form states: Notifications
+  // Set default settings for system notifications and alerts
   const [notifConfig, setNotifConfig] = useState({
     taskAssigned: true,
     taskCompleted: true,
     commentAdded: true,
-    mentionNotify: true
+    mentionNotify: true // Triggers when user is explicitly tagged using @username syntax
   });
   const [notifSuccess, setNotifSuccess] = useState('');
 
