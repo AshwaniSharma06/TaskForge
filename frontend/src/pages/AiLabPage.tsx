@@ -27,7 +27,8 @@ export const AiLabPage: React.FC<AiLabPageProps> = ({ projects }) => {
 
   const handleAnalyzeNotes = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rawNotes.trim()) {
+    const cleanNotes = rawNotes.trim();
+    if (!cleanNotes) {
       return addToast('Please enter some meeting transcript text', 'warning');
     }
 
@@ -36,7 +37,7 @@ export const AiLabPage: React.FC<AiLabPageProps> = ({ projects }) => {
     setCreatedCount(null);
 
     try {
-      const res = await api.post('/ai/meeting-notes', { notes: rawNotes });
+      const res = await api.post('/ai/meeting-notes', { notes: cleanNotes });
       setSummary(res.data.summary);
       addToast('Transcript analyzed successfully!', 'success');
     } catch (err: any) {
