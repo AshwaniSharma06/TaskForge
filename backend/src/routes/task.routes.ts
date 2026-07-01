@@ -13,12 +13,12 @@ router.put('/:id', updateTask);
 router.delete('/:id', deleteTask);
 router.post('/:id/duplicate', duplicateTask);
 
-// Checklist items
+// Checklist sub-item endpoints inside task instances
 router.post('/:id/checklist', addChecklistItem);
 router.put('/checklist/:itemId', updateChecklistItem);
 router.delete('/checklist/:itemId', deleteChecklistItem);
 
-// Attachments
+// File attachment upload and deletion endpoints
 router.post('/:id/attachments', upload.single('file'), addAttachment);
 router.delete('/attachments/:attachmentId', deleteAttachment);
 
