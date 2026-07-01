@@ -1,9 +1,12 @@
 import React from 'react';
 
+/**
+ * Props mapping interface for the Select select input wrapper.
+ */
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  options: { value: string; label: string }[];
-  error?: string;
+  label?: string; // Optional field descriptive text placed above the dropdown
+  options: { value: string; label: string }[]; // Array of selectable value/label keypairs
+  error?: string; // Error validation string displayed beneath input container
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
