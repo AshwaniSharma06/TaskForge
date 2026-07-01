@@ -20,16 +20,17 @@ export const Dialog: React.FC<DialogProps> = ({
   // Handle escape key closure
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
+      // Closes dialog immediately when user presses keyboard Escape key
       if (e.key === 'Escape') onClose();
     };
     
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // Block standard page scroll while open
       window.addEventListener('keydown', handleEscape);
     }
     
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = 'unset'; // Restore standard page scroll on clean shutdown
       window.removeEventListener('keydown', handleEscape);
     };
   }, [isOpen, onClose]);
