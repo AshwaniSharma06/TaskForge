@@ -7,10 +7,16 @@ export interface TokenPayload {
   email: string;
 }
 
+/**
+ * Signs and generates a JSON Web Token with a standard lifespan of 7 days.
+ */
 export const generateToken = (payload: TokenPayload): string => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 };
 
+/**
+ * Validates the token structure and decodes the payload parameters.
+ */
 export const verifyToken = (token: string): TokenPayload => {
   return jwt.verify(token, JWT_SECRET) as TokenPayload;
 };
