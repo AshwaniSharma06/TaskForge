@@ -13,8 +13,8 @@ export const searchUsers = async (req: AuthenticatedRequest, res: Response) => {
     const users = await prisma.user.findMany({
       where: {
         OR: [
-          { name: { contains: query as string, mode: 'insensitive' } },
-          { email: { contains: query as string, mode: 'insensitive' } }
+          { name: { contains: query as string } },
+          { email: { contains: query as string } }
         ]
       },
       select: {

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { Card } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
-import { Folder, CheckSquare, Clock, AlertCircle, Calendar } from 'lucide-react';
+import { Folder, CheckSquare, Clock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface DashboardStats {
