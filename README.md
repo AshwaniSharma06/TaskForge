@@ -58,7 +58,7 @@ graph TD
 * **Real-time Collaboration**: Live task status updates and collaborative drag-and-drop triggers powered by Socket.io.
 * **AI Lab & Action Suggestions**: Workspace summarizations and critical next-step suggestions based on database task priorities.
 * **Floating Action Control (FAB)**: Absolute-positioned floating action trigger for creating new projects instantly from anywhere.
-* **Zero-Setup Database**: Built-in SQLite database support for zero-configuration, immediate local development.
+* **Zero-Setup Database**: Built-in SQLite database support for zero-configuration, immediate local development (data is persisted locally in the backend workspace `dev.db` file).
 
 ---
 
