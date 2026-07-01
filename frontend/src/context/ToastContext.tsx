@@ -14,6 +14,8 @@ interface ToastContextType {
   addToast: (message: string, type?: ToastType) => void;
 }
 
+const TOAST_DISMISS_DELAY = 4000; // Auto-dismiss delay for screen notifications in milliseconds
+
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -25,7 +27,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4000);
+    }, TOAST_DISMISS_DELAY);
   }, []);
 
   const removeToast = (id: string) => {
