@@ -5,9 +5,12 @@ import { AuthenticatedRequest } from '../middleware/auth.middleware';
 export const getProjectActivities = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { projectId } = req.params;
+    if (!projectId) {
+      return res.status(400).json({ error: 'Project ID is required parameter' });
+    }
     const userId = req.user?.userId || '';
 
-    // Verify membership
+    // Verify membership inside target project
     const membership = await prisma.projectMember.findFirst({
       where: { projectId, userId }
     });
