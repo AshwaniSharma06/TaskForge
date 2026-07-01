@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Props supported by the Button UI component.
+ * Allows custom layout variants, size selections, and asynchronous loading spinners.
+ */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'glass';
   size?: 'sm' | 'md' | 'lg';
