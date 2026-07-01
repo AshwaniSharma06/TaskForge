@@ -30,7 +30,9 @@ export const ResetPassword: React.FC<ResetPasswordProps> = ({ params, onNavigate
     setLoading(true);
 
     try {
-      await api.post('/auth/reset-password', { email, code, newPassword });
+      // Trim reset code input to handle potential leading/trailing whitespaces gracefully
+      const sanitizedCode = code.trim();
+      await api.post('/auth/reset-password', { email, code: sanitizedCode, newPassword });
       setSuccess('Password reset successfully! Redirecting to login...');
       setTimeout(() => {
         onNavigate('login');
